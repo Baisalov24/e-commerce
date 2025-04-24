@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+
+# builds
+/dist
+
+# misc
+.env
+.DS_Store
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# IDEs and editors
+.vscode
+.idea
