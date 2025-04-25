@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/cartSlice";
 import { Product } from "@/types";
-// import phoneImage from "../assets/images/iphone.jpg";
+
 
 interface ProductCardProps {
   product: Product;
