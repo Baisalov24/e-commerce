@@ -1,38 +1,81 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, Filters } from '@/types';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { Product } from "@/types";
+import { mockProducts } from "@/data/products";
 
-interface CatalogState {
-  products: Product[];
-  filters: Filters;
-  sortBy: 'popular' | 'priceAsc' | 'priceDesc';
-}
-
-const initialState: CatalogState = {
-  products: [], 
-  filters: {
-    priceRange: [0, 10000],
-    brands: [],
-    rating: 0,
-    category: 'all',
-  },
-  sortBy: 'popular',
+export type Filters = {
+  category: 'phone' | 'laptop' | 'gadget' | 'all';
+  priceRange: [number, number];
+  brands: string[];
+  rating: number;
 };
 
+type SortBy = "popularity" | "price" | "rating" | "priceAsc" | "priceDesc";
+
+type CatalogState = {
+  products: Product[];
+  filters: Filters;
+  sortBy: SortBy;
+  loading: boolean;
+  error: string | null;
+};
+
+const initialState: CatalogState = {
+  products: [],
+  filters: {
+    category: 'all',
+    priceRange: [0, 1000],
+    brands: [],
+    rating: 0,
+  },
+  sortBy: "popularity",
+  loading: false,
+  error: null,
+};
+
+export const fetchProducts = createAsyncThunk<Product[]>(
+  "catalog/fetchProducts",
+  async () => {
+    return new Promise<Product[]>((resolve) => {
+      setTimeout(() => {
+        resolve(mockProducts);
+      }, 1000);
+    });
+  }
+);
+
 const catalogSlice = createSlice({
-  name: 'catalog',
+  name: "catalog",
   initialState,
   reducers: {
-    setProducts(state, action: PayloadAction<Product[]>) {
-      state.products = action.payload;
+    setFilters: (state, action: PayloadAction<Partial<Filters>>) => {
+      state.filters = {
+        ...state.filters,
+        ...action.payload,
+      };
     },
-    setFilters(state, action: PayloadAction<Filters>) {
-      state.filters = action.payload;
-    },
-    setSortBy(state, action: PayloadAction<CatalogState['sortBy']>) {
+    setSortBy: (state, action: PayloadAction<SortBy>) => {
       state.sortBy = action.payload;
     },
+    setProducts: (state, action: PayloadAction<Product[]>) => {
+      state.products = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Ошибка загрузки";
+      });
   },
 });
 
-export const { setProducts, setFilters, setSortBy } = catalogSlice.actions;
+export const { setFilters, setSortBy, setProducts } = catalogSlice.actions;
 export default catalogSlice.reducer;

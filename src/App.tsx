@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense, lazy } from "react";
 import { useDispatch } from "react-redux";
-import { setProducts } from "@/store/catalogSlice";
-import { mockProducts } from "@/data/products";
+import { fetchProducts } from "@/store/catalogSlice";
 import type { AppDispatch } from "@/store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
@@ -15,8 +14,9 @@ const App = () => {
   const cartItemCount = useAppSelector((state) => state.cart.items.length);
 
   useEffect(() => {
-    dispatch(setProducts(mockProducts));
+    dispatch(fetchProducts());
   }, [dispatch]);
+  
 
   return (
     <Router>

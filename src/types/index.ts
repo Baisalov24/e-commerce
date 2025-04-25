@@ -1,12 +1,12 @@
 export interface Product {
-    id: string;
-    title: string;
-    description: string;
-    brand: string;
-    image: string;
-    price: number;
-    rating: number;
-    category: 'phone' | 'laptop' | 'gadget';
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  brand: string;
+  rating: number;
+  category: 'phone' | 'laptop' | 'gadget';
   }
   
   export interface CartItem extends Product {

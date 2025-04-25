@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   entry: "./src/index.tsx",
   output: {
     filename: "[name].[contenthash].js",
@@ -11,7 +11,7 @@ module.exports = {
     publicPath: "/"
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".tsx", ".js", '.jsx'],
     alias: {
       "@": path.resolve(__dirname, "src"),
     }
