@@ -1,9 +1,12 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
+const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
-  mode: 'development',
+  mode: isProduction ? "production" : "development",
   entry: "./src/index.tsx",
   output: {
     filename: "[name].[contenthash].js",
@@ -11,7 +14,7 @@ module.exports = {
     publicPath: "/"
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", '.jsx'],
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
     alias: {
       "@": path.resolve(__dirname, "src"),
     }
@@ -28,17 +31,17 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        type: "asset"
-      },
-      {
-        test: /\.(png|jpe?g|gif|webp|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
         type: "asset/resource",
+        generator: {
+          filename: 'images/[hash][ext][query]'
+        },
         use: [
           {
             loader: "image-webpack-loader",
             options: {
-              mozjpeg: { progressive: true },
+              disable: !isProduction,
+              mozjpeg: { progressive: true, quality: 75 },
               optipng: { enabled: true },
               pngquant: { quality: [0.65, 0.90], speed: 4 },
               gifsicle: { interlaced: false },
@@ -53,7 +56,8 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html"
-    })
+    }),
+    ...(isProduction ? [new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false })] : [])
   ],
   optimization: {
     splitChunks: {
@@ -73,7 +77,9 @@ module.exports = {
         },
       },
     },
+    runtimeChunk: "single"
   },
+  devtool: isProduction ? false : "source-map",
   devServer: {
     static: {
       directory: path.join(__dirname, "public")
