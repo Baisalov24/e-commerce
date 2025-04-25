@@ -9,10 +9,10 @@ export interface Product {
     category: 'phone' | 'laptop' | 'gadget';
   }
   
-  export interface CartItem {
-    product: Product;
+  export interface CartItem extends Product {
     quantity: number;
   }
+  
   
   export interface Filters {
     priceRange: [number, number];

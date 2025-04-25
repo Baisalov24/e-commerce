@@ -23,7 +23,7 @@ const FiltersPanel = () => {
   return (
     <div style={{ marginBottom: 16 }}>
       <label>
-        Сортировка:
+        Sort by:
         <select onChange={handleSortChange}>
           <option value="popular">By popularity</option>
           <option value="priceAsc">By price ascending</option>
