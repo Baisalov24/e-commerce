@@ -4,6 +4,7 @@ import { setProducts } from "@/store/catalogSlice";
 import { mockProducts } from "@/data/products";
 import Catalog from "@/features/catalog/Catalog";
 import type { AppDispatch } from "@/store";
+import FiltersPanel from "@/features/catalog/Filters";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <div>
       <h1>Electronics Store</h1>
+      <FiltersPanel />
       <Catalog />
     </div>
   );
