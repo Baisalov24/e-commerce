@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/cartSlice";
 import { Product } from "@/types";
+// import phoneImage from "../assets/images/iphone.jpg";
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div style={{ border: "1px solid #ccc", borderRadius: 8, padding: 16, width: 200 }}>
-    <img src={product.image} alt={product.title} style={{ width: "100%" }} />
+    <img  src={product.image} alt={product.title}  loading="lazy" style={{ width: "100%" }} />
     <h3>{product.title}</h3>
     <p>{product.brand}</p>
     <p>${product.price}</p>

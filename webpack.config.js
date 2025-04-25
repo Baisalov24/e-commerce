@@ -30,6 +30,22 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: "asset"
+      },
+      {
+        test: /\.(png|jpe?g|gif|webp|svg)$/i,
+        type: "asset/resource",
+        use: [
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: { progressive: true },
+              optipng: { enabled: true },
+              pngquant: { quality: [0.65, 0.90], speed: 4 },
+              gifsicle: { interlaced: false },
+              webp: { quality: 75 }
+            },
+          },
+        ],
       }
     ]
   },
@@ -39,6 +55,25 @@ module.exports = {
       template: "./public/index.html"
     })
   ],
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+        common: {
+          minChunks: 2,
+          name: "common",
+          chunks: "all",
+          priority: 10,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
   devServer: {
     static: {
       directory: path.join(__dirname, "public")
