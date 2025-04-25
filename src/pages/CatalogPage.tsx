@@ -15,7 +15,7 @@ const CatalogPage = () => {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>Каталог</h1>
+      <h1>Catalog</h1>
       <FiltersPanel />
       <Catalog />
     </div>

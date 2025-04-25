@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { useDispatch } from "react-redux";
 import { setProducts } from "@/store/catalogSlice";
 import { mockProducts } from "@/data/products";
 import type { AppDispatch } from "@/store";
 import { BrowserRouter as Router, Routes, Route, Link  } from "react-router-dom";
-import CatalogPage from "@/pages/CatalogPage";
-import CartPage from "@/pages/CartPage";
+const CatalogPage = lazy(() => import("@/pages/CatalogPage"));
+const CartPage = lazy(() => import("@/pages/CartPage"));
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,10 +22,12 @@ const App = () => {
         <Link to="/cart">Cart</Link>
       </nav>
     </header>
-    <Routes>
-      <Route path="/" element={<CatalogPage />} />
-      <Route path="/cart" element={<CartPage />} />
-    </Routes>
+    <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<CatalogPage />} />
+          <Route path="/cart" element={<CartPage />} />
+        </Routes>
+      </Suspense>
   </Router>
   );
 };

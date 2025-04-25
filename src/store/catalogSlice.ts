@@ -8,7 +8,7 @@ interface CatalogState {
 }
 
 const initialState: CatalogState = {
-  products: [], // позже загрузим из mock-данных
+  products: [], 
   filters: {
     priceRange: [0, 10000],
     brands: [],
